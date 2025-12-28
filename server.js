@@ -52,7 +52,7 @@ app.post('/pdf-to-images', upload.single('pdf'), async (req, res) => {
     // Process each page
     for (let pageNum = 1; pageNum <= numPages; pageNum++) {
       const page = await pdfDocument.getPage(pageNum);
-      const viewport = page.getViewport({ scale: 2.0 }); // 2x scale for better quality
+      const viewport = page.getViewport({ scale: 1.0 }); // 2x scale for better quality
 
       // Create canvas
       const canvas = createCanvas(viewport.width, viewport.height);
