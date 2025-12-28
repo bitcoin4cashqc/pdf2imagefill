@@ -128,15 +128,28 @@ app.post('/images-to-pdf', express.json({ limit: '50mb' }), async (req, res) => 
         const { x, y, text, type } = annotation;
 
         if (type === 'checkbox' || type === 'checkmark') {
-          // Draw checkbox/checkmark
-          const size = annotation.size || 20;
+          // Draw checkmark (✓) only - assumes box already exists in PDF
+          const size = annotation.size || 12;
+          const strokeWidth = annotation.strokeWidth || 2;
+          const color = annotation.color || 'black';
+
+          // Draw checkmark as two lines forming ✓ shape
+          // Bottom-left to middle-bottom (short stroke)
+          const x1 = x;
+          const y1 = y + size * 0.5;
+          const x2 = x + size * 0.4;
+          const y2 = y + size;
+
+          // Middle-bottom to top-right (long stroke)
+          const x3 = x2;
+          const y3 = y2;
+          const x4 = x + size;
+          const y4 = y;
+
           svgOverlay += `
-            <rect x="${x}" y="${y}" width="${size}" height="${size}"
-                  stroke="black" stroke-width="2" fill="none"/>
-            <line x1="${x}" y1="${y}" x2="${x + size}" y2="${y + size}"
-                  stroke="black" stroke-width="2"/>
-            <line x1="${x + size}" y1="${y}" x2="${x}" y2="${y + size}"
-                  stroke="black" stroke-width="2"/>
+            <polyline points="${x1},${y1} ${x2},${y2} ${x4},${y4}"
+                      stroke="${color}" stroke-width="${strokeWidth}"
+                      fill="none" stroke-linecap="round" stroke-linejoin="round"/>
           `;
         } else {
           // Draw text
