@@ -156,12 +156,14 @@ app.post('/images-to-pdf', express.json({ limit: '50mb' }), async (req, res) => 
           const fontSize = annotation.fontSize || 14;
           const fontFamily = annotation.fontFamily || 'Arial';
           const color = annotation.color || 'black';
+          const letterSpacing = annotation.letterSpacing || 0;
 
           svgOverlay += `
             <text x="${x}" y="${y}"
                   font-family="${fontFamily}"
                   font-size="${fontSize}"
-                  fill="${color}">${escapeXml(text || '')}</text>
+                  fill="${color}"
+                  letter-spacing="${letterSpacing}">${escapeXml(text || '')}</text>
           `;
         }
       }
