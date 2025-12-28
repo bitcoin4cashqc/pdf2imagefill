@@ -1,0 +1,7 @@
+node_modules/
+temp/
+*.pdf
+*.png
+*.log
+.env
+.DS_Store
